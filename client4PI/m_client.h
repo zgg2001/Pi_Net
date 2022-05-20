@@ -24,7 +24,6 @@
 #include<string.h>
 #include<errno.h>
 
-#include<nice_cmd/cmdline.h>
 #include"../public/log.h"
 #include"m_recv_node.h"
 #include"m_send_node.h"

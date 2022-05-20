@@ -51,6 +51,9 @@ private:
     */
     void addtask(task t);
 
+    //传输数据
+    void send_data_to_server();
+
 private:
     //所属client
     m_client* _client;

@@ -164,6 +164,13 @@ m_recv_node::recvdata()
                 //DEBUG("收到心跳包");
             }
             break;
+
+            case CMD_C2S_DATA_RESULT:
+            {
+                c2s_data_result* cr = (c2s_data_result*)ph;
+                INFO("数据传输结果: %d", cr->result);
+            }
+            break;
             
             default:
             {

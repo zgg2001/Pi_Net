@@ -10,7 +10,7 @@
 
 #include<unistd.h>
 #include<time.h>
-#include"log.h"
+#include"../public/log.h"
 
 class m_client_node
 {

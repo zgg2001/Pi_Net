@@ -248,6 +248,20 @@ m_group_node::recvdata(SOCKET sockfd)
             }
             break;
             
+            case CMD_C2S_DATA:
+            {
+                c2s_data* cd = (c2s_data*)ph;
+                INFO("|收到数据| Id: %d Temp: %d Rh: %d", cd->id, cd->Temp, cd->Rh);
+                //send result
+                _tnode.addtask([this, sockfd]()
+                {
+                    c2s_data_result ret;
+                    ret.result = 1;
+                    send(sockfd, (const char*)&ret, sizeof(ret), 0);
+                });
+            }
+            break;
+
             default:
             {
                 ERROR("send_node 收到非法包");
@@ -269,11 +283,3 @@ m_group_node::send_s2c_heart(SOCKET sockfd)
     s2c_heart h;
     send(sockfd, (const char*)&h, sizeof(h), 0);
 }
-
-/*void
-m_group_node::send_operate_result(SOCKET sockfd, int ret)
-{
-    operate_result oret;
-    oret.result = ret;
-    send(sockfd, (const char*)&oret, sizeof(oret), 0);
-}*/
