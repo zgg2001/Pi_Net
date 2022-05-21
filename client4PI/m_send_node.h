@@ -12,7 +12,6 @@
 #include<string>
 #include<string.h>
 #include<regex>
-#include<iostream>
 #include<fstream>
 
 #include"../public/m_timer.h"

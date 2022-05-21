@@ -136,7 +136,7 @@ m_send_node::send_data_to_server()
     //I T/RH: 27 °C / 49 %
 
     std::ifstream ifs;
-    ifs.open("/home/pi/Weather-Pi/indoor/data",std::ios::in);
+    ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data",std::ios::in);
     if (!ifs.is_open())
         ERROR("read fail.");
     

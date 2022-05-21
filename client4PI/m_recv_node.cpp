@@ -181,6 +181,12 @@ m_recv_node::recvdata()
                     INFO("new illu: %d", sgir->illu);
                     _illu = sgir->illu;
                     //reflash
+                    std::ofstream ofs;
+                    ofs.open("/home/pi/Pi_Net/hardware4PI/indoor/data_illu", std::ios::out);
+                    if (!ofs.is_open())
+                        ERROR("read fail.");
+                    ofs << "illu: " << _illu << std::endl;
+                    ofs.close();
                 }
             }
             break;
