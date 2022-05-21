@@ -57,6 +57,9 @@ private:
     //传输数据
     void send_data_to_server();
 
+    //获取光照数据
+    void get_illu_from_server();
+
 private:
     //所属client
     m_client* _client;

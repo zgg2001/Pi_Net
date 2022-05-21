@@ -19,6 +19,10 @@ enum cmd
     CMD_C2S_DATA_RESULT,        //数据传输结果 树莓派->server
     CMD_C2S_GET_DATA,           //数据获取 PC->server
     CMD_C2S_GET_DATA_RESULT,    //数据获取 PC->server
+    CMD_C2S_SET_ILLU,           //设置光照 PC->server
+    CMD_S2C_SET_ILLU_RESULT,    //设置光照结果 server->PC
+    CMD_C2S_GET_ILLU,           //获取光照 树莓派->server
+    CMD_S2C_GET_ILLU_RESULT,    //获取光照结果 server->树莓派
 };
 
 /*
@@ -109,6 +113,57 @@ struct c2s_get_data_result : public header
     int Temp;//室内温度
     int Rh;//室内湿度
     int illu;//光照
+};
+
+/*
+* 设置光照 PC->server
+*/
+struct c2s_set_illu : public header
+{
+    c2s_set_illu()
+    {
+        this->cmd = CMD_C2S_SET_ILLU;
+        this->length = sizeof(c2s_set_illu);
+    }
+    int illu;
+};
+
+/*
+* 设置光照结果 server->PC
+*/
+struct s2c_set_illu_result : public header
+{
+    s2c_set_illu_result()
+    {
+        this->cmd = CMD_S2C_SET_ILLU_RESULT;
+        this->length = sizeof(s2c_set_illu_result);
+    }
+    int illu;
+};
+
+/*
+* 获取光照 树莓派->server
+*/
+struct c2s_get_illu : public header
+{
+    c2s_get_illu()
+    {
+        this->cmd = CMD_C2S_GET_ILLU;
+        this->length = sizeof(c2s_get_illu);
+    }
+};
+
+/*
+* 获取光照结果 server->树莓派
+*/
+struct s2c_get_illu_result : public header
+{
+    s2c_get_illu_result()
+    {
+        this->cmd = CMD_S2C_GET_ILLU_RESULT;
+        this->length = sizeof(s2c_get_illu_result);
+    }
+    int illu;
 };
 
 #endif

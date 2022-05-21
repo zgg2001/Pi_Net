@@ -55,6 +55,9 @@ private:
     
     //本机socket
     SOCKET _sockfd;
+
+    //光照
+    int _illu;
     
     //recv_buf
     char* _recv_buf;

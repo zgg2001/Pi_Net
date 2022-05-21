@@ -81,11 +81,12 @@ m_send_node::func_run(m_thread* thread)
             mytimer = 0.0;
         }
 
-        //数据包 10秒一发
+        //数据包/光照请求 10秒一发
         datatimer += temptimer;
         if(datatimer >= 10.0)
         {
             send_data_to_server();
+            get_illu_from_server();//get_illu
             datatimer = 0.0;
         }
         
@@ -153,7 +154,12 @@ m_send_node::send_data_to_server()
     send(_sockfd, (const char*)&data, sizeof(data), 0);
 }
 
-
+void 
+m_send_node::get_illu_from_server()
+{
+    c2s_get_illu data;
+    send(_sockfd, (const char*)&data, sizeof(data), 0);
+}
 
 
 

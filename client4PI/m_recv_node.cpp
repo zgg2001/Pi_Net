@@ -11,6 +11,7 @@
 m_recv_node::m_recv_node(m_client* client):
     _client(client),
     _sockfd(INVALID_SOCKET),
+    _illu(-1),
     _recv_len_2(0),
     _mytimer(0.0)
 {
@@ -171,7 +172,19 @@ m_recv_node::recvdata()
                 INFO("数据传输结果: %d", cr->result);
             }
             break;
-            
+
+            case CMD_S2C_GET_ILLU_RESULT:
+            {
+                s2c_get_illu_result* sgir = (s2c_get_illu_result*)ph;
+                if(_illu != sgir->illu)
+                {
+                    INFO("new illu: %d", sgir->illu);
+                    _illu = sgir->illu;
+                    //reflash
+                }
+            }
+            break;
+
             default:
             {
                 WARN("login_node 未知包");

@@ -264,7 +264,22 @@ m_group_node::recvdata(SOCKET sockfd)
             }
             break;
 
-            //PC->server
+            //树莓派->server 获取光照
+            case CMD_C2S_GET_ILLU:
+            {
+                INFO("树莓派端请求光照数据");
+                //send result
+                _tnode.addtask([this, sockfd]()
+                {
+                    s2c_get_illu_result ret;
+                    auto pd = _server->getdata();
+                    ret.illu = pd.illu;
+                    send(sockfd, (const char*)&ret, sizeof(ret), 0);
+                });
+            }
+            break;
+
+            //PC->server 获取数据
             case CMD_C2S_GET_DATA:
             {
                 INFO("PC端请求数据");
@@ -275,6 +290,23 @@ m_group_node::recvdata(SOCKET sockfd)
                 });
                 //心跳重置
                 client->reset_hb();
+            }
+            break;
+
+            //PC->server 设置光照
+            case CMD_C2S_SET_ILLU:
+            {
+                c2s_set_illu* csi = (c2s_set_illu*)ph;
+                INFO("|设置光照| illu: %d", csi->illu);
+                _server->setdata_i(csi->illu);
+                //send result
+                _tnode.addtask([this, sockfd]()
+                {
+                    s2c_set_illu_result ret;
+                    auto pd = _server->getdata();
+                    ret.illu = pd.illu;
+                    send(sockfd, (const char*)&ret, sizeof(ret), 0);
+                });
             }
             break;
 
