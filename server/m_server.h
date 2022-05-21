@@ -17,6 +17,7 @@
 
 #include<string.h>
 #include<errno.h>
+#include<atomic>
 
 #include"m_group_node.h"
 #include"../public/log.h"
@@ -28,6 +29,17 @@ public:
     using task = std::function<void()>;
     static constexpr SOCKET INVALID_SOCKET = (SOCKET)(~0);
     static constexpr int SOCKET_ERROR = -1;
+
+private:
+    struct pdata
+    {
+        int illu;//光照
+        int temp;//温度
+        int rh;//湿度
+    };
+    std::atomic<int> _data_illu;
+    std::atomic<int> _data_temp;
+    std::atomic<int> _data_rh;
 
 public:
     m_server();
@@ -68,6 +80,29 @@ public:
 
     //开始工作
     void m_work();
+
+    //设置data temp/rh
+    void setdata_tr(int t, int r)
+    {
+        _data_temp = t;
+        _data_rh = r;
+    }
+
+    //设置data illu
+    void setdata_i(int i)
+    {
+        _data_illu = i;
+    }
+
+    //获取数据
+    pdata getdata()
+    {
+        pdata ret;
+        ret.illu = _data_illu;
+        ret.temp = _data_temp;
+        ret.rh = _data_rh;
+        return ret;
+    }
 
 private:
     //添加新客户端

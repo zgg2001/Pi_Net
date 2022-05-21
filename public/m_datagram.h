@@ -13,10 +13,12 @@
 */
 enum cmd
 {
-    CMD_C2S_HEART,      //心跳 client to server
-    CMD_S2C_HEART,      //心跳 server to client
-    CMD_C2S_DATA,       //数据 树莓派->server
-    CMD_C2S_DATA_RESULT,//数据传输结果 树莓派->server
+    CMD_C2S_HEART,              //心跳 client to server
+    CMD_S2C_HEART,              //心跳 server to client
+    CMD_C2S_DATA,               //数据 树莓派->server
+    CMD_C2S_DATA_RESULT,        //数据传输结果 树莓派->server
+    CMD_C2S_GET_DATA,           //数据获取 PC->server
+    CMD_C2S_GET_DATA_RESULT,    //数据获取 PC->server
 };
 
 /*
@@ -80,6 +82,33 @@ struct c2s_data_result : public header
         this->length = sizeof(c2s_data_result);
     }
     int result;
+};
+
+/*
+* 数据获取 PC->server
+*/
+struct c2s_get_data : public header
+{
+    c2s_get_data()
+    {
+        this->cmd = CMD_C2S_GET_DATA;
+        this->length = sizeof(c2s_get_data);
+    }
+};
+
+/*
+* 数据获取 PC->server
+*/
+struct c2s_get_data_result : public header
+{
+    c2s_get_data_result()
+    {
+        this->cmd = CMD_C2S_GET_DATA_RESULT;
+        this->length = sizeof(c2s_get_data_result);
+    }
+    int Temp;//室内温度
+    int Rh;//室内湿度
+    int illu;//光照
 };
 
 #endif

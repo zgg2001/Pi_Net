@@ -57,11 +57,11 @@ private:
     * 发送s2c心跳包
     */
     void send_s2c_heart(SOCKET sockfd);
-    
+
     /*
-    * 发送操作结果包
+    * 发送data到pc
     */
-    void send_operate_result(SOCKET sockfd, int ret);
+    void send_data_to_pc(SOCKET sockfd);
 
 private:
     //所属server
