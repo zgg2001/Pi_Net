@@ -81,9 +81,9 @@ m_send_node::func_run(m_thread* thread)
             mytimer = 0.0;
         }
 
-        //数据包 60秒一发
+        //数据包 10秒一发
         datatimer += temptimer;
-        if(datatimer >= 60.0)
+        if(datatimer >= 10.0)
         {
             send_data_to_server();
             datatimer = 0.0;
@@ -132,10 +132,24 @@ m_send_node::addtask(task t)
 void
 m_send_node::send_data_to_server()
 {
+    //I T/RH: 27 °C / 49 %
+
+    std::ifstream ifs;
+    ifs.open("/home/pi/Weather-Pi/indoor/data",std::ios::in);
+    if (!ifs.is_open())
+        ERROR("read fail.");
+    
+    std::string buf;
+    getline(ifs, buf);
+    ifs.close();
+
+    std::cmatch m;
+    auto ret = std::regex_match(buf.c_str(), m, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
+
     c2s_data data;
     data.id = 1;
-    data.Temp = 26;
-    data.Rh = 40;
+    data.Temp = stoi(m.str(1));
+    data.Rh = stoi(m.str(2));
     send(_sockfd, (const char*)&data, sizeof(data), 0);
 }
 
