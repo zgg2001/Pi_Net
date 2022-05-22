@@ -142,7 +142,7 @@ m_send_node::send_data_to_server()
     getline(ifs, buf_t);
     ifs.close();
     std::cmatch m_t;
-    auto ret_t = std::regex_match(buf_t.c_str(), m_t, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
+    std::regex_match(buf_t.c_str(), m_t, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
 
     //声贝部分
     std::ifstream ifs_d;
@@ -153,7 +153,7 @@ m_send_node::send_data_to_server()
     getline(ifs_d, buf_d);
     ifs_d.close();
     std::cmatch m_d;
-    auto ret_d = std::regex_match(buf_d.c_str(), m_d, std::regex("dB: ([0-9]+).*$");
+    std::regex_match(buf_d.c_str(), m_d, std::regex("dB: ([0-9]+).*$"));
 
     c2s_data data;
     data.id = 1;
