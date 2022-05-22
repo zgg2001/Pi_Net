@@ -1,7 +1,8 @@
 #!/bin/bash
 
+#分贝部分
+/usr/bin/bash /home/pi/Pi_Net/hardware4PI/indoor/getIndoorD.sh
 #光照强度
-echo "fire: false"
 illupath="/home/pi/Pi_Net/hardware4PI/indoor/data_illu"
 if [ ! -x $illupath ];then
     echo "illu: -1"
@@ -20,4 +21,3 @@ elif [ -n "$eth" ];then
 else
     echo "No internet connection"
 fi
-
