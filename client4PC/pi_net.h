@@ -43,6 +43,7 @@ private:
     QLabel *text_Temp;
     QLabel *text_Rh;
     QLabel *text_illu;
+    QLabel *text_db;
 
     QTextEdit *te1;
     QLineEdit *le1;

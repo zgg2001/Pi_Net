@@ -18,6 +18,7 @@ pi_net::pi_net(QWidget *parent)
     text2 = new QLabel(tr("请输入光照值"));//子框架 右边下 文本
 
     //数据文本
+    text_illu = new QLabel(tr("光照: -"));//子框架 左下3 文本
     QFont font;
     font.setFamily("微软雅黑");
     font.setPointSize(14);//设置字号
@@ -25,8 +26,8 @@ pi_net::pi_net(QWidget *parent)
     text_Temp->setFont(font);
     text_Rh = new QLabel(tr("湿度: --%"));//子框架 左下2 文本
     text_Rh->setFont(font);
-    text_illu = new QLabel(tr("光照: -"));//子框架 左下3 文本
-    text_illu->setFont(font);
+    text_db = new QLabel(tr("分贝: --dB"));//子框架 左下3 文本
+    text_db->setFont(font);
 
     le1 = new QLineEdit;//子框架下 右边 文本接收
     b2 = new QPushButton(tr("设置"));//子框架下 右边 确定按钮
@@ -35,11 +36,12 @@ pi_net::pi_net(QWidget *parent)
     mainLayout1->addLayout(mainLayout2);
     mainLayout1->addLayout(mainLayout3);
     mainLayout2->addWidget(text1);
+    mainLayout2->addWidget(text_illu);
     //左边的数据
     mainLayout3->addLayout(mainLayout5);
     mainLayout5->addWidget(text_Temp);
     mainLayout5->addWidget(text_Rh);
-    mainLayout5->addWidget(text_illu);
+    mainLayout5->addWidget(text_db);
     //右边的按钮
     mainLayout3->addLayout(mainLayout4);
     mainLayout4->addWidget(text2);
@@ -112,6 +114,7 @@ void pi_net::slot_recvmessage()
             text_Temp->setText("温度: " + QString::number(cgdr->Temp) + "°C");
             text_Rh->setText("湿度: " + QString::number(cgdr->Rh) + "%");
             text_illu->setText("光照: " + QString::number(cgdr->illu));
+            text_db->setText("分贝: " + QString::number(cgdr->Db) +"dB");
         }
         break;
 

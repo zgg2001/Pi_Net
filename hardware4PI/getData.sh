@@ -4,7 +4,7 @@
 /usr/bin/bash /home/pi/Pi_Net/hardware4PI/indoor/getIndoorD.sh
 #光照强度
 illupath="/home/pi/Pi_Net/hardware4PI/indoor/data_illu"
-if [ ! -x $illupath ];then
+if [ ! -f $illupath ];then
     echo "illu: -1"
 else
     cat $illupath

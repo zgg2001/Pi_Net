@@ -133,9 +133,8 @@ m_send_node::addtask(task t)
 void
 m_send_node::send_data_to_server()
 {
-    std::ifstream ifs;
-
     //温湿度数据部分
+    std::ifstream ifs;
     ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data", std::ios::in);
     if (!ifs.is_open())
         ERROR("read fail.");
@@ -146,14 +145,15 @@ m_send_node::send_data_to_server()
     auto ret_t = std::regex_match(buf_t.c_str(), m_t, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
 
     //声贝部分
-    ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data_db", std::ios::in);
-    if (!ifs.is_open())
+    std::ifstream ifs_d;
+    ifs_d.open("/home/pi/Pi_Net/hardware4PI/indoor/data_db", std::ios::in);
+    if (!ifs_d.is_open())
         ERROR("read fail.");
     std::string buf_d;
-    getline(ifs, buf_d);
-    ifs.close();
+    getline(ifs_d, buf_d);
+    ifs_d.close();
     std::cmatch m_d;
-    auto ret_d = std::regex_match(buf_d.c_str(), m_d, std::regex("([0-9]+)"));
+    auto ret_d = std::regex_match(buf_d.c_str(), m_d, std::regex("dB: ([0-9]+).*$");
 
     c2s_data data;
     data.id = 1;
