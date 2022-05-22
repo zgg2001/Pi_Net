@@ -73,6 +73,7 @@ struct c2s_data : public header
     int id;//传感器id
     int Temp;//室内温度
     int Rh;//室内湿度
+    int Db;//室内声贝
 };
 
 /*
@@ -113,6 +114,7 @@ struct c2s_get_data_result : public header
     int Temp;//室内温度
     int Rh;//室内湿度
     int illu;//光照
+    int Db;//室内声贝
 };
 
 /*

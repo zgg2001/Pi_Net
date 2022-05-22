@@ -133,24 +133,33 @@ m_send_node::addtask(task t)
 void
 m_send_node::send_data_to_server()
 {
-    //I T/RH: 27 °C / 49 %
-
     std::ifstream ifs;
-    ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data",std::ios::in);
+
+    //温湿度数据部分
+    ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data", std::ios::in);
     if (!ifs.is_open())
         ERROR("read fail.");
-    
-    std::string buf;
-    getline(ifs, buf);
+    std::string buf_t;
+    getline(ifs, buf_t);
     ifs.close();
+    std::cmatch m_t;
+    auto ret_t = std::regex_match(buf_t.c_str(), m_t, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
 
-    std::cmatch m;
-    auto ret = std::regex_match(buf.c_str(), m, std::regex(".*: ([0-9]+) *°C / ([0-9]+).*%"));
+    //声贝部分
+    ifs.open("/home/pi/Pi_Net/hardware4PI/indoor/data_db", std::ios::in);
+    if (!ifs.is_open())
+        ERROR("read fail.");
+    std::string buf_d;
+    getline(ifs, buf_d);
+    ifs.close();
+    std::cmatch m_d;
+    auto ret_d = std::regex_match(buf_d.c_str(), m_d, std::regex("([0-9]+)"));
 
     c2s_data data;
     data.id = 1;
-    data.Temp = stoi(m.str(1));
-    data.Rh = stoi(m.str(2));
+    data.Temp = stoi(m_t.str(1));
+    data.Rh = stoi(m_t.str(2));
+    data.Db = stoi(m_d.str(1));
     send(_sockfd, (const char*)&data, sizeof(data), 0);
 }
 

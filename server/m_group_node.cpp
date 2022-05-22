@@ -252,8 +252,8 @@ m_group_node::recvdata(SOCKET sockfd)
             case CMD_C2S_DATA:
             {
                 c2s_data* cd = (c2s_data*)ph;
-                INFO("|收到数据| Id: %d Temp: %d Rh: %d", cd->id, cd->Temp, cd->Rh);
-                _server->setdata_tr(cd->Temp, cd->Rh);
+                DEBUG("|收到数据| Id: %d Temp: %d Rh: %d dB: %d", cd->id, cd->Temp, cd->Rh, cd->Db);
+                _server->setdata_tr(cd->Temp, cd->Rh, cd->Db);
                 //send result
                 _tnode.addtask([this, sockfd]()
                 {
@@ -267,7 +267,7 @@ m_group_node::recvdata(SOCKET sockfd)
             //树莓派->server 获取光照
             case CMD_C2S_GET_ILLU:
             {
-                INFO("树莓派端请求光照数据");
+                DEBUG("树莓派端请求光照数据");
                 //send result
                 _tnode.addtask([this, sockfd]()
                 {
@@ -282,7 +282,7 @@ m_group_node::recvdata(SOCKET sockfd)
             //PC->server 获取数据
             case CMD_C2S_GET_DATA:
             {
-                INFO("PC端请求数据");
+                DEBUG("PC端请求数据");
                 //send result
                 _tnode.addtask([this, sockfd]()
                 {
@@ -297,7 +297,7 @@ m_group_node::recvdata(SOCKET sockfd)
             case CMD_C2S_SET_ILLU:
             {
                 c2s_set_illu* csi = (c2s_set_illu*)ph;
-                INFO("|设置光照| illu: %d", csi->illu);
+                DEBUG("|设置光照| illu: %d", csi->illu);
                 _server->setdata_i(csi->illu);
                 //send result
                 _tnode.addtask([this, sockfd]()
@@ -340,5 +340,6 @@ m_group_node::send_data_to_pc(SOCKET sockfd)
     data.Temp = pd.temp;
     data.Rh = pd.rh;
     data.illu = pd.illu;
+    data.Db = pd.db;
     send(sockfd, (const char*)&data, sizeof(data), 0);
 }

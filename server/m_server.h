@@ -36,10 +36,12 @@ private:
         int illu;//光照
         int temp;//温度
         int rh;//湿度
+        int db;//分贝
     };
     std::atomic<int> _data_illu;
     std::atomic<int> _data_temp;
     std::atomic<int> _data_rh;
+    std::atomic<int> _data_db;
 
 public:
     m_server();
@@ -82,10 +84,11 @@ public:
     void m_work();
 
     //设置data temp/rh
-    void setdata_tr(int t, int r)
+    void setdata_tr(int t, int r, int db)
     {
         _data_temp = t;
         _data_rh = r;
+        _data_db = db;
     }
 
     //设置data illu
@@ -101,6 +104,7 @@ public:
         ret.illu = _data_illu;
         ret.temp = _data_temp;
         ret.rh = _data_rh;
+        ret.db = _data_db;
         return ret;
     }
 
