@@ -69,9 +69,6 @@ for num in range(1,8):
     disp.image(image)
     disp.show()
 
-#开机自启后尝试更新天气
-os.system('/usr/bin/bash /home/pi/Weather-Pi/outdoor/getOutdoor.sh &')
-
 for num in range(8,12):
     time.sleep(1)
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
