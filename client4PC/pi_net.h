@@ -12,6 +12,8 @@
 #include <QTime>
 #include <QTimer>
 #include <QIntValidator>
+#include <QPainter>
+#include <list>
 #include "m_datagram.h"
 
 class pi_net : public QWidget
@@ -29,6 +31,7 @@ private slots:
     void slot_recvmessage(); //接收来自服务器的消息的槽
     void slot_disconnect(); //取消与服务器连接的槽
     void botton_send();//发送
+    void paintEvent(QPaintEvent *);//重写函数
 
 private:
     //tcp
@@ -36,6 +39,11 @@ private:
 
     //计时获取
     QTimer *timer;
+
+    //数据存储
+    std::list<int> _list_t;//温度
+    std::list<int> _list_r;//湿度
+    std::list<int> _list_d;//分贝
 
     //文本
     QLabel *text1;

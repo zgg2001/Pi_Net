@@ -13,6 +13,7 @@ m_server::m_server():
     _data_illu = -1;
     _data_temp = -1;
     _data_rh = -1;
+    _data_db = -1;
 }
 
 m_server::~m_server()
