@@ -27,6 +27,16 @@
 &emsp;&emsp;线程的退出通过 `close()`(安全退出) 和 `exit()`(不安全退出) 来进行。
 
 &emsp;
-# datagram
+# m_datagram
 &emsp;&emsp;数据报文部分。</br>
 &emsp;&emsp;一个完整的数据报文由报头 `struct header` 和其数据部分组成。
+
+&emsp;
+# m_db
+&emsp;&emsp;此类主要是封装了一下C++连接操作MySql的过程，使得项目中对数据库的操作更加方便。</br>
+&emsp;&emsp;使用本类的前提条件是需要确保已经安装MySql数据库系统，并且安装其开发包 `mysql-devel`。</br></br>
+&emsp;&emsp;为了确保线程安全，需要在主线程的起始位置添加 `mysql_library_init(0, nullptr, nullptr)` 并在主线程的末尾位置添加 `mysql_library_end();`。</br>
+* 参考地址:</br>
+https://dev.mysql.com/doc/c-api/8.0/en/mysql-thread-init.html</br>
+https://dev.mysql.com/doc/c-api/8.0/en/mysql-library-init.html
+
