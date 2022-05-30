@@ -14,6 +14,9 @@ m_server::m_server():
     _data_temp = -1;
     _data_rh = -1;
     _data_db = -1;
+
+    //数据库mgr
+    _db = new m_db_mgr(this);
 }
 
 m_server::~m_server()
@@ -37,6 +40,13 @@ m_server::m_init()
         ERROR("Server init faild -- %s", strerror(errno));
         return -1; 
     } 
+
+    //数据库读取
+    if(_db->init("localhost", "username", "password") < 0)
+    {
+        return -2;
+    }
+    //待后续业务更新ing
 
     INFO("Server init(%d) success", _sock);
     return 0;
@@ -159,6 +169,11 @@ m_server::m_work()
     ev.events = EPOLLIN;
     epoll_ctl(epollfd, EPOLL_CTL_ADD, _sock, &ev);
 
+    //计时器->数据持久化
+    m_timer timer;
+    timer.update();
+    double mytimer = 0.0;//持久化计时器
+
     //处理
     while(1)
     {
@@ -175,25 +190,17 @@ m_server::m_work()
             m_accept();
         }
         
-        //数据库更新task缓冲区 
-        if(!_tasksbuf.empty()) 
+        //更新计时器
+        double temptimer = timer.get_sec();
+        timer.update();
+
+        //数据持久化至数据库
+        mytimer += temptimer;
+        if(mytimer >= 60.0)//60秒
         {
-            std::lock_guard<std::mutex> lock(_mutex_task);
-            for(auto& t : _tasksbuf)
-            {
-                _tasks.push_back(t);
-            }
-            _tasksbuf.clear();
+            savedata();
+            mytimer = 0.0;
         }
-        
-        //处理数据库更新任务
-        if(_tasks.empty())
-            continue;
-        for(auto& t : _tasks)
-        {
-            t();
-        }
-        _tasks.clear();
     }
     
     close(epollfd);
@@ -213,4 +220,24 @@ m_server::addclient_main(m_client_node* client)
 		}
 	}
 	pMinServer->addclient(client);
+}
+
+void
+m_server::savedata()
+{
+    int i = _data_illu.load();//光照
+    int t = _data_temp.load();//温度
+    int r = _data_rh.load();//湿度
+    int d = _data_db.load();//分贝
+    
+    //若为正常数据则录入
+    if(t > 0)
+    {
+        _db->insert_data(i, t, r, d);
+        DEBUG("数据已录入 - i:%d t:%d r:%d d:%d", i, t, r, d);
+    }
+    else
+    {
+        DEBUG("数据未录入 - 数值错误 - i:%d t:%d r:%d d:%d", i, t, r, d);
+    }
 }

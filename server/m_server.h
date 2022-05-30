@@ -20,6 +20,7 @@
 #include<atomic>
 
 #include"m_group_node.h"
+#include"m_db_mgr.h"
 #include"../public/log.h"
 
 class m_server
@@ -112,16 +113,18 @@ private:
     //添加新客户端
     void addclient_main(m_client_node* client);
 
+    //保存数据
+    void savedata();
+
 private:
     //服务器socket
     SOCKET _sock;
 
+    //数据库管理者
+    m_db_mgr* _db;
+
     //子线程
     std::vector<m_group_node*> _cell_servers;
-
-    //task缓冲区相关
-    std::list<task> _tasks;
-    std::list<task> _tasksbuf;
 
     //lock
     std::mutex _mutex_task;//任务队列锁
