@@ -46,10 +46,17 @@ $ ./pi_net_client4pi #启动
 ```
 * client4PC目录内为PC(windows)客户端，需要在QT环境下编译。(编译前需修改pi_net.cpp +70处的ip端口)
 ### 4.服务端程序部署说明
+* 首先进行MySql相关配置
+```shell
+$ ps -ef | grep mysqld #首先确保环境中MySql已启动
+$ sudo yum install mysql-devel #其次确保已安装MySql的开发包 mysql-devel (centos)
+mysql> create database pi_net; #最后在MySql中新建pi_net库
+```
 * server目录内为服务端，部署命令如下：
 ```shell
 $ cd Pi_Net/
 $ cd server/
+$ vim m_server.cpp +45 #修改数据库登录用户/密码
 $ make
 $ ./pi_net #启动
 ```
