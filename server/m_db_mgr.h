@@ -78,7 +78,7 @@ private:
     `temperature` mediumint unsigned NOT NULL DEFAULT '0',
     `humidity` mediumint unsigned NOT NULL DEFAULT '0',
     `decibel` mediumint unsigned NOT NULL DEFAULT '0',
-    `illumination` mediumint unsigned NOT NULL DEFAULT '0',
+    `illumination` mediumint NOT NULL DEFAULT '0',
     PRIMARY KEY (`time`));)";
 
     //插入数据

@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -std=c++17 -Wall -g -pthread
+CFLAGS = -std=c++17 -Wall -g -pthread `mysql_config --cflags --libs`
 TARGET = pi_net_client4pi
 OBJS = *.cpp ../public/*.cpp
 
